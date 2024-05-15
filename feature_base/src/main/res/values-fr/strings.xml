@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_not_found">Données non trouvées</string>
+    <string name="show_less">Afficher moins</string>
+    <string name="show_more">Afficher plus</string>
+</resources>
