@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_toolbar_title">\\\"\\\"</string>
+    <string name="back">Back</string>
+    <string name="gallery">Gallery</string>
+</resources>
