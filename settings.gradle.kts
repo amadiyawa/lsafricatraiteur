@@ -1,7 +1,11 @@
 rootProject.name = "LsAfricaTraiteur"
 include(
     ":app",
-    ":feature_base"
+    ":feature_base",
+    ":feature_service",
+    ":feature_delivery",
+    ":feature_gallery",
+    ":feature_contact",
 )
 
 pluginManagement {
@@ -32,7 +36,3 @@ dependencyResolutionManagement {
 // This feature is particularly useful in a multi-module project setup, where you often need to declare dependencies on other projects.
 // By enabling this feature, you can access other projects in your settings.gradle.kts file in a type-safe manner.
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":feature_service")
-include(":feature_delivery")
-include(":feature_gallery")
-include(":feature-contact")
