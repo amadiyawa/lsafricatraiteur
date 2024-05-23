@@ -40,7 +40,7 @@ fun DeliveryListScreen(
 @Composable
 private fun SetUpToolbar() {
     Toolbar(
-        centered = true,
+        centered = false,
         title = stringResource(id = R.string.deliveries),
         onBackClick = {  }
     )

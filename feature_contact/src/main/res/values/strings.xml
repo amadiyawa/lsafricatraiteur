@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_toolbar_title">\\\"\\\"</string>
+    <string name="back">Back</string>
+    <string name="contact">Contact</string>
+    <string name="contact_body">Fill the form bellow to get in touch with us</string>
+    <string name="full_name">Full name</string>
+    <string name="purpose">Purpose</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+</resources>

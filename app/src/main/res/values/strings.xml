@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LsAfricaTraiteur</string>
+    <string name="services">Services</string>
+    <string name="deliveries">Deliveries</string>
+    <string name="gallery">Gallery</string>
+    <string name="contact">Contact</string>
 </resources>

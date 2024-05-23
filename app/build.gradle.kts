@@ -57,7 +57,11 @@ android {
 
 dependencies {
 
-    api(projects.featureBase)
+    implementation(projects.featureService)
+    implementation(projects.featureDelivery)
+    implementation(projects.featureGallery)
+    implementation(projects.featureContact)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

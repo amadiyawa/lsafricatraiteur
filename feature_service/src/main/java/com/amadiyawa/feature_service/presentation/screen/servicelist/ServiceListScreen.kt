@@ -40,7 +40,7 @@ fun ServiceListScreen(
 @Composable
 private fun SetUpToolbar() {
     Toolbar(
-        centered = true,
+        centered = false,
         title = stringResource(id = R.string.services),
         onBackClick = {  }
     )
