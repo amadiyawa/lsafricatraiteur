@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlin.symbolProcessing)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -41,6 +43,9 @@ android {
 dependencies {
 
     api(projects.featureBase)
+
+    ksp(libs.roomCompiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

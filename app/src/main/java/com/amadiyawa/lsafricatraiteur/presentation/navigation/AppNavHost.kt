@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.amadiyawa.feature_base.presentation.navigation.AppNavigationDestination
 import com.amadiyawa.feature_contact.presentation.navigation.contactGraph
+import com.amadiyawa.feature_delivery.presentation.navigation.DeliveryListNavigation
 import com.amadiyawa.feature_delivery.presentation.navigation.deliveryListGraph
 import com.amadiyawa.feature_gallery.presentation.navigation.imageListGraph
 import com.amadiyawa.feature_service.presentation.navigation.ServiceListNavigation
@@ -30,6 +31,12 @@ fun AppNavHost(
         )
 
         deliveryListGraph(
+            onNewDelivery = {
+                onNavigateToDestination(
+                    DeliveryListNavigation,
+                    DeliveryListNavigation.deliveryCreateRoute()
+                )
+            },
             onBackClick = onBackClick
         )
 

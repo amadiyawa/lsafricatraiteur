@@ -4,4 +4,14 @@
     <string name="back">Back</string>
     <string name="delivery">Delivery</string>
     <string name="deliveries">Deliveries</string>
+    <string name="delivery_create">New delivery</string>
+    <string name="new_delivery">New delivery</string>
+    <string name="full_name">Full name</string>
+    <string name="delivery_create_body">Your meal trays available every day, fill out the order form</string>
+    <string name="address">Address</string>
+    <string name="phone_number">Phone number</string>
+    <string name="order">Order</string>
+    <string name="payment_mean">Payment mean</string>
+    <string name="om">OM</string>
+    <string name="momo">MOMO</string>
 </resources>

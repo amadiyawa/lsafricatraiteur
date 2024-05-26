@@ -4,4 +4,11 @@
     <string name="back">Retour</string>
     <string name="delivery">Livraison</string>
     <string name="deliveries">Livraisons</string>
+    <string name="delivery_create">Nouvelle Commande</string>
+    <string name="new_delivery">Nouvelle Commande</string>
+    <string name="full_name">Nom complet</string>
+    <string name="delivery_create_body">Vos plateaux repas disponibles tous les jours, remplissez le formulaire de commande</string>
+    <string name="address">Adresse</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="order">Commander</string>
 </resources>
