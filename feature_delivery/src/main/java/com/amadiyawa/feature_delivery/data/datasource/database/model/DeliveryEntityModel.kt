@@ -20,6 +20,7 @@ internal data class DeliveryEntityModel(
     val paymentMean: String,
     val paymentPhoneNumber: String,
     val status: String,
+    val deliveryDate: Long = System.currentTimeMillis(),
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis()
 )
@@ -32,6 +33,7 @@ internal fun DeliveryEntityModel.toDelivery() = Delivery(
     paymentMean = paymentMean,
     paymentPhoneNumber = paymentPhoneNumber,
     status = status,
+    deliveryDate = deliveryDate,
     createdAt = createdAt,
     updatedAt = updatedAt
 )

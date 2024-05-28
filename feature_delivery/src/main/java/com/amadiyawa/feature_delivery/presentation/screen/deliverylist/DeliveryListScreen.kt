@@ -1,9 +1,12 @@
 package com.amadiyawa.feature_delivery.presentation.screen.deliverylist
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,22 +16,33 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DeliveryDining
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.util.formatDate
+import com.amadiyawa.feature_base.common.util.formatTime
 import com.amadiyawa.feature_base.presentation.compose.composable.DataNotFoundAnim
+import com.amadiyawa.feature_base.presentation.compose.composable.DrawHorizontalDottedLine
+import com.amadiyawa.feature_base.presentation.compose.composable.ExpandableRow
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
-import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleLarge
+import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleMedium
+import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleSmall
 import com.amadiyawa.feature_delivery.R
 import com.amadiyawa.feature_delivery.domain.model.Delivery
 import com.amadiyawa.feature_delivery.presentation.compose.composable.FloatingActionButton
@@ -136,20 +150,123 @@ private fun HandleUiState(
 private fun DeliveryCard(
     delivery: Delivery
 ) {
+    val expandedMenus = remember { mutableStateOf (false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 10.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
+            .padding(bottom = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            DeliveryCardHeader(delivery = delivery)
+            DrawHorizontalDottedLine(
+                color = MaterialTheme.colorScheme.onSurface,
+                startPadding = 0.dp,
+                endPadding = 0.dp
+            )
+            DeliveryCardContent(delivery = delivery)
+            HorizontalDivider(thickness = 2.dp, color = MaterialTheme.colorScheme.background)
+            ExpandableRow(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                expanded = expandedMenus.value,
+                fixedLabel = stringResource(id = R.string.menus),
+                onRowClick = {
+                    expandedMenus.value = !expandedMenus.value
+                }
+            )
+            AnimatedVisibility(visible = expandedMenus.value) {
+                DeliveryMenus(delivery = delivery)
+            }
+        }
+    }
+}
+
+@Composable
+private fun DeliveryCardHeader(
+    delivery: Delivery
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(Dimen.Spacing.large),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            TextTitleMedium(
+                text = delivery.customerFullName,
+                fontWeight = FontWeight.Bold
+            )
+
+            TextTitleSmall(text = delivery.paymentPhoneNumber)
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Badge(
+            modifier = Modifier,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            content = {
+                Row(
+                    modifier = Modifier.padding(Dimen.Spacing.medium),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+
+                ) {
+                    TextTitleSmall(
+                        text = delivery.status,
+                    )
+                }
+            }
         )
+    }
+}
+
+@Composable
+private fun DeliveryCardContent(
+    delivery: Delivery
+) {
+    val deliveryContent = delivery.address + ", " + formatDate(delivery.deliveryDate) + " " + stringResource(
+        id = R.string.at
+    ) + " " + formatTime(delivery.deliveryDate)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(Dimen.Spacing.large),
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            modifier = Modifier.padding(Dimen.Spacing.medium),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.spacedBy(Dimen.Spacing.medium, Alignment.CenterHorizontally),
         ) {
-            TextTitleLarge(
-                text = delivery.customerFullName,
+            Icon(imageVector = Icons.Filled.DeliveryDining, contentDescription = deliveryContent)
+            TextTitleMedium(
+                text = deliveryContent,
+            )
+        }
+    }
+}
+
+@Composable
+private fun DeliveryMenus(
+    delivery: Delivery
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(Dimen.Spacing.large),
+        verticalArrangement = Arrangement.spacedBy(Dimen.Spacing.medium, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        delivery.menuList.forEach {
+            TextTitleSmall(
+                text = it,
             )
         }
     }

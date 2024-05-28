@@ -3,4 +3,6 @@
     <string name="data_not_found">Données non trouvées</string>
     <string name="show_less">Afficher moins</string>
     <string name="show_more">Afficher plus</string>
+    <string name="select_date">Sélectionner une date</string>
+    <string name="select_time">Sélectionner une heure</string>
 </resources>

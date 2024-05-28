@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
+import com.amadiyawa.feature_base.common.util.formatDate
+import com.amadiyawa.feature_base.common.util.formatTime
 import com.amadiyawa.feature_base.domain.result.Result
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
@@ -25,7 +27,6 @@ internal class DeliveryCreateViewModel(
     private val getMenuListUseCase: GetMenuListUseCase,
     private val createDeliveryUseCase: CreateDeliveryUseCase
 ) : BaseViewModel<DeliveryCreateViewModel.UiState, DeliveryCreateViewModel.Action>(UiState.Loading) {
-
     private var job: Job? = null
 
     private var _fullName = MutableStateFlow("")
@@ -40,6 +41,25 @@ internal class DeliveryCreateViewModel(
     private var _phoneNumber = MutableStateFlow("")
     val phoneNumber = _phoneNumber.asStateFlow()
 
+    private var _menuList = MutableStateFlow(emptyList<Menu>())
+
+    private var _filteredMenuList = MutableStateFlow(emptyList<Menu>())
+    val filteredMenuList = _filteredMenuList.asStateFlow()
+
+    private var _selectedMenuList = MutableStateFlow(emptyList<Menu>())
+    val selectedMenuList = _selectedMenuList.asStateFlow()
+
+    private var _menu = MutableStateFlow("")
+    val menu = _menu.asStateFlow()
+
+    private var _selectedDate = MutableStateFlow(0L)
+
+    private var _selectedTime = MutableStateFlow(0L)
+
+    fun onEnter() {
+        getMenuList()
+    }
+
     private fun getMenuList() {
         if (job != null) {
             job?.cancel()
@@ -53,6 +73,7 @@ internal class DeliveryCreateViewModel(
                         if (menuListResult.value.isEmpty()) {
                             Action.MenuListLoadEmpty
                         } else {
+                            _menuList.value = menuListResult.value
                             Action.MenuListLoadSuccess(
                                 menuListResult.value
                             )
@@ -65,6 +86,57 @@ internal class DeliveryCreateViewModel(
         }
     }
 
+    fun onMenuChanged(value: String) {
+        _menu.value = value
+        _filteredMenuList.value = _menuList.value.filter { it.name.contains(value, ignoreCase = true) }
+    }
+
+    fun onMenuSelected(menu: Menu) {
+        _selectedMenuList.value += menu
+        _menu.value = ""
+        _filteredMenuList.value = emptyList()
+    }
+
+    fun onDateSelected(date: Long) {
+        _selectedDate.value = date
+    }
+
+    fun onTimeSelected(time: Long) {
+        _selectedTime.value = time
+    }
+
+    fun validateForm() : Boolean {
+        if (_fullName.value.isEmpty()) {
+            return false
+        }
+
+        if (_address.value.isEmpty()) {
+            return false
+        }
+
+        if (_paymentMean.value == R.string.payment_mean) {
+            return false
+        }
+
+        if (_phoneNumber.value.isEmpty()) {
+            return false
+        }
+
+        if (_selectedMenuList.value.isEmpty()) {
+            return false
+        }
+
+        if (_selectedDate.value == 0L) {
+            return false
+        }
+
+        if (_selectedTime.value == 0L) {
+            return false
+        }
+
+        return true
+    }
+
     fun sendWhatsAppMessage(context: Context) {
         if (job != null) {
             job?.cancel()
@@ -72,21 +144,29 @@ internal class DeliveryCreateViewModel(
         }
 
         job = viewModelScope.launch {
-            val message = "Hi, I am ${fullName.value}.\n Located at ${_address.value}. \n I am ordering ... \n I will pay using ${_paymentMean.value}. \n The phone number for payment is ${_phoneNumber.value}"
+            val message = "Hi, I am ${fullName.value}.\n " +
+                    "Located at ${_address.value}.\n " +
+                    "I am ordering for ${_selectedMenuList.value.map { it.name }}\n " +
+                    "I will pay using ${_paymentMean.value}.\n " +
+                    "The phone number for payment is ${_phoneNumber.value}\n" +
+                    "The delivery date is ${formatDate(_selectedDate.value)} and time is ${formatTime(_selectedTime.value)}."
             val phoneNumber = "+237698518698"
 
             try {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$phoneNumber&text=$message")
                 context.startActivity(intent)
-                createDeliveryUseCase(Delivery(
-                    customerFullName = _fullName.value,
-                    address = _address.value,
-                    menuList = listOf("..."),
-                    paymentMean = PaymentMean.OM.toString(),
-                    paymentPhoneNumber = _phoneNumber.value,
-                    status = getRandomDeliveryStatus().toString()
-                ))
+                createDeliveryUseCase(
+                    Delivery(
+                        customerFullName = _fullName.value,
+                        address = _address.value,
+                        menuList = _selectedMenuList.value.map { it.name },
+                        paymentMean = PaymentMean.OM.toString(),
+                        paymentPhoneNumber = _phoneNumber.value,
+                        status = getRandomDeliveryStatus().toString(),
+                        deliveryDate = _selectedDate.value
+                    )
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -125,29 +205,14 @@ internal class DeliveryCreateViewModel(
         data object MenuListLoadFailure : Action {
             override fun reduce(state: UiState) = UiState.ErrorMenuList
         }
-
-        data object Loading : Action {
-            override fun reduce(state: UiState) = UiState.Loading
-        }
-
-        data class DeliverySuccess(private val done: Boolean) : Action {
-            override fun reduce(state: UiState) = UiState.DeliveryCreateContent(done = done)
-        }
-
-        data object ErrorDeliveryCreate : Action {
-            override fun reduce(state: UiState) = UiState.ErrorDeliveryCreate
-        }
     }
 
     @Immutable
     internal sealed interface UiState : BaseState {
         data class MenuListContent(val menuList: List<Menu>) : UiState
-        data class DeliveryCreateContent(val done: Boolean) : UiState
-        data object IDLE : UiState
         data object EmptyMenuList : UiState
         data object Loading : UiState
         data object ErrorMenuList : UiState
-        data object ErrorDeliveryCreate : UiState
     }
 
     override fun onCleared() {

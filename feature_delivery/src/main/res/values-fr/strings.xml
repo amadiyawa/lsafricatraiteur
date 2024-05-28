@@ -11,4 +11,14 @@
     <string name="address">Adresse</string>
     <string name="phone_number">Numéro de téléphone</string>
     <string name="order">Commander</string>
+    <string name="payment_mean">Moyen de paiement</string>
+    <string name="om">OM</string>
+    <string name="momo">MOMO</string>
+    <string name="select_menu">Sélectionnez un menu</string>
+    <string name="select_date">Sélectionnez une date</string>
+    <string name="select_time">Sélectionnez une heure</string>
+    <string name="time">Heure</string>
+    <string name="date">Date</string>
+    <string name="menus">Menus</string>
+    <string name="at">à</string>
 </resources>

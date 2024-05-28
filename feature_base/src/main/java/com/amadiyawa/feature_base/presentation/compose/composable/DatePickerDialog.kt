@@ -42,7 +42,6 @@ fun DatePickerDialog(
     onConfirmButton: (Long?) -> Unit,
     selectableDates: SelectableDates
 ) {
-    // set the initial date
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = selectedDate,
         selectableDates = selectableDates

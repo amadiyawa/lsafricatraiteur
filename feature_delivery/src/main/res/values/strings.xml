@@ -14,4 +14,11 @@
     <string name="payment_mean">Payment mean</string>
     <string name="om">OM</string>
     <string name="momo">MOMO</string>
+    <string name="select_menu">Select a menu</string>
+    <string name="select_date">Select a date</string>
+    <string name="select_time">Select a time</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="menus">Menus</string>
+    <string name="at">at</string>
 </resources>
