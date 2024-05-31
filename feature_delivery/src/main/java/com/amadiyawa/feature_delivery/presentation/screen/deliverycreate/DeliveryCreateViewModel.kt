@@ -150,12 +150,13 @@ internal class DeliveryCreateViewModel(
         }
 
         job = viewModelScope.launch {
-            val message = "Hi, I am ${fullName.value}.\n " +
-                    "Located at ${_address.value}.\n " +
-                    "I am ordering for ${_selectedMenuList.value.map { it.name }}\n " +
-                    "I will pay using ${_paymentMean.value}.\n " +
-                    "The phone number for payment is ${_phoneNumber.value}\n" +
-                    "The delivery date is ${formatDate(_selectedDate.value)} and time is ${formatTime(_selectedTime.value)}."
+            val message = context.getString(R.string.message_greeting, fullName.value) + "\n " +
+                    context.getString(R.string.message_location, _address.value) + "\n " +
+                    context.getString(R.string.message_order,
+                        _selectedMenuList.value.joinToString(", ") { it.name }) + "\n " +
+                    context.getString(R.string.message_payment, _paymentMean.value.toString()) + "\n " +
+                    context.getString(R.string.message_phone, _phoneNumber.value) + "\n" +
+                    context.getString(R.string.message_delivery_date, formatDate(_selectedDate.value), formatTime(_selectedTime.value))
             val phoneNumber = "+237698518698"
 
             try {

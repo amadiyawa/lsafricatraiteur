@@ -21,4 +21,11 @@
     <string name="date">Date</string>
     <string name="menus">Menus</string>
     <string name="at">à</string>
+
+    <string name="message_greeting">Salut, je suis %1$s.</string>
+    <string name="message_location">Situé à %1$s.</string>
+    <string name="message_order">Je commande pour %1$s.</string>
+    <string name="message_payment">Je vais payer en utilisant %1$s.</string>
+    <string name="message_phone">Le numéro de téléphone pour le paiement est %1$s.</string>
+    <string name="message_delivery_date">La date de livraison est %1$s et l\'heure est %2$s.</string>
 </resources>
