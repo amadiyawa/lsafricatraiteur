@@ -93,8 +93,14 @@ internal class DeliveryCreateViewModel(
 
     fun onMenuSelected(menu: Menu) {
         _selectedMenuList.value += menu
+        _menuList.value = _menuList.value.filter { it != menu }
         _menu.value = ""
         _filteredMenuList.value = emptyList()
+    }
+
+    fun onMenuRemoved(menu: Menu) {
+        _selectedMenuList.value = _selectedMenuList.value.filter { it != menu }
+        _menuList.value += menu
     }
 
     fun onDateSelected(date: Long) {
