@@ -2,6 +2,7 @@
 
 package com.amadiyawa.feature_delivery.presentation.screen.deliverycreate
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -206,7 +207,10 @@ private fun DeliveryForm(
             }
 
             item {
-                SelectedMenuList(selectedMenuList = selectedMenuList.value)
+                SelectedMenuList(
+                    deliveryCreateViewModel = viewModel,
+                    selectedMenuList = selectedMenuList.value
+                )
             }
 
             item {
@@ -345,7 +349,7 @@ private fun MenuSelection(
 
     var expanded by remember { mutableStateOf(false) }
 
-    Row {
+    Column {
         OutlinedTextField(
             value = menu.value,
             onValueChange = { viewModel.onMenuChanged(it) },
@@ -357,43 +361,49 @@ private fun MenuSelection(
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
         )
 
-        DropdownMenu(
-            modifier = Modifier
-                .background(
-                    color = MaterialTheme.colorScheme.surface
-                )
-                .fillMaxWidth(),
-            expanded = filteredMenuList.value.isNotEmpty(),
-            onDismissRequest = { expanded = false },
-        ) {
-            filteredMenuList.value.forEach { menu ->
-                DropdownMenuItem(
-                    text = {
+        AnimatedVisibility(visible = filteredMenuList.value.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                filteredMenuList.value.forEach { menu ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                expanded = false
+                                viewModel.onMenuSelected(
+                                    menu = menu
+                                )
+                            }
+                    ) {
                         TextTitleSmall(
-                            modifier = Modifier.padding(7.dp),
+                            modifier = Modifier
+                                .padding(7.dp)
+                                .fillMaxWidth(),
                             text = menu.name,
                         )
-                    },
-                    onClick = {
-                        expanded = false
-                        viewModel.onMenuSelected(
-                            menu = menu
-                        )
                     }
-                )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun SelectedMenuList(selectedMenuList: List<Menu>) {
+private fun SelectedMenuList(
+    deliveryCreateViewModel: DeliveryCreateViewModel,
+    selectedMenuList: List<Menu>
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimen.Spacing.small)
     ) {
         selectedMenuList.forEach { menuItem ->
             Badge(
-                modifier = Modifier,
+                modifier = Modifier
+                    .clickable {
+                        deliveryCreateViewModel.onMenuRemoved(menu = menuItem)
+                    },
                 containerColor = MaterialTheme.colorScheme.surface,
                 contentColor = MaterialTheme.colorScheme.onSurface,
                 content = {
