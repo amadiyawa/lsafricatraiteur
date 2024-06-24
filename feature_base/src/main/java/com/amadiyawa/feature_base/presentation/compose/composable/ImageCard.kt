@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_service.presentation.compose.composable
+package com.amadiyawa.feature_base.presentation.compose.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth

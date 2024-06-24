@@ -29,14 +29,8 @@ fun FloatingActionButton(
 
     AnimatedVisibility(
         visible = isVisible,
-        enter = slideInVertically {
-            with(density) { 40.dp.roundToPx() }
-        } + fadeIn(),
-        exit = fadeOut(
-            animationSpec = keyframes {
-                this.durationMillis = 120
-            }
-        )
+        enter = slideInVertically { with(density) { 40.dp.roundToPx() } } + fadeIn(),
+        exit = fadeOut(animationSpec = keyframes { this.durationMillis = 120 })
     ) {
         ExtendedFloatingActionButton(
             onClick = onClick,

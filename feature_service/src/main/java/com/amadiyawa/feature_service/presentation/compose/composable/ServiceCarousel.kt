@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.presentation.compose.composable.DottedPagerIndicator
+import com.amadiyawa.feature_base.presentation.compose.composable.ImageCard
 import com.amadiyawa.feature_service.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,9 +21,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ServiceCarousel(modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState {
-        3
-    }
+    val pagerState = rememberPagerState { 3 }
     val coroutineScope = rememberCoroutineScope()
     val isUserInteracting = pagerState.interactionSource.collectIsDraggedAsState()
 
@@ -46,8 +45,7 @@ fun ServiceCarousel(modifier: Modifier = Modifier) {
     Column {
         HorizontalPager(
             state = pagerState,
-            modifier = modifier
-                .padding(start = 10.dp, end = 10.dp)
+            modifier = modifier.padding(start = 10.dp, end = 10.dp)
         ) { page ->
             when (page) {
                 0 -> {
